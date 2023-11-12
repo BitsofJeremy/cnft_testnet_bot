@@ -2,7 +2,7 @@
 
 This bot uses the `python-telegram-bot` framework to build out a nice little bot to create NFTs on the Cardano TESTNET blockchain.
 
-Read more here:  [BLOG_LINK](https://blog.deafmice.com/building-a-nft-minting-bot-with-cardano-telegram-and-python-introduction/)
+Read more here:  [BLOG_LINK](https://ephergent.com/building-a-nft-minting-bot-with-cardano-telegram-and-python-introduction/)
 
 ### Pre-install
 
