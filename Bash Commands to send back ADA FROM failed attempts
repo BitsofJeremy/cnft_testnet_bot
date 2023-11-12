@@ -1,0 +1,67 @@
+Bash Commands to send back ADA FROM failed attempts
+
+
+# Setup Exports and alias
+
+export CARDANO_NODE_SOCKET_PATH=~/Library/Application\ Support/Daedalus\ Testnet/cardano-node.socket
+
+export TESTNET_ID=1097911063
+
+alias cardano-cli="/Applications/Daedalus\ Testnet.app/Contents/MacOS/cardano-cli"
+
+
+# Get the payment address from the bot dialog
+
+
+cardano-cli query utxo --address $(< payment.addr) --testnet-magic $TESTNET_ID
+
+# export hash
+
+export TX_HASH=8cc9375dc8f45ad5aafac3d71591233d63d526eea6b409c4d9acc2aa4f5ab39b
+export TX_IX=0
+export AVAILABLE_LOVELACE=5000000
+
+# build a tx
+
+cardano-cli transaction build-raw \
+  --fee 0 \
+  --tx-in $TX_HASH#$TX_IX \
+  --tx-out "$(< recv.addr)+$(($AVAILABLE_LOVELACE - $TX_FEE))" \
+  --out-file matx.raw
+
+# calculate the fee
+
+cardano-cli transaction calculate-min-fee \
+  --tx-body-file matx.raw \
+  --tx-in-count 1 \
+  --tx-out-count 1 \
+  --witness-count 1 \
+  --testnet-magic $TESTNET_ID \
+  --protocol-params-file protocol.json
+
+# export fee
+
+export TX_FEE=171265
+
+# build tx with fee
+
+cardano-cli transaction build-raw \
+  --fee $TX_FEE \
+  --tx-in $TX_HASH#$TX_IX \
+  --tx-out "$(< recv.addr)+$(($AVAILABLE_LOVELACE - $TX_FEE))" \
+  --out-file matx.raw
+
+# sign the tx
+
+cardano-cli transaction sign \
+  --signing-key-file 1f31071b-67a5-42e4-bb0c-aeb16cd02a1b-payment.skey \
+  --testnet-magic $TESTNET_ID \
+  --tx-body-file matx.raw \
+  --out-file matx.signed
+
+# send it to chain
+
+cardano-cli transaction submit --tx-file  matx.signed --testnet-magic $TESTNET_ID
+
+
+
