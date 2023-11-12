@@ -17,7 +17,7 @@ This app assumes you are on a Mac and uses the default Daedalus installed for cl
 
 Clone the repo, change into it, and make a tmp directory
 
-    git clone https://gitlab.com/deafmice/cnft_testnet_bot.git
+    git clone https://github.com/ephergent/cnft_testnet_bot.git
     cd cnft_testnet_bot
     mkdir tmp
 
